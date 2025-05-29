@@ -1,0 +1,33 @@
+from collections import deque, defaultdict
+from typing import List
+
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
+        if source == destination:
+            return True
+
+        
+        graph = defaultdict(list)
+        for u, v in edges:
+            graph[u].append(v)
+            graph[v].append(u)
+
+        # BFS 
+        queue = deque([source])
+        visited = set([source])
+
+        while queue:
+            node = queue.popleft()
+            if node == destination:
+                return True
+            for neighbor in graph[node]:
+                if neighbor not in visited:
+                    visited.add(neighbor)
+                    queue.append(neighbor)
+
+        return False
+
+sol = Solution()
+print(sol.validPath(3, [[0,1],[1,2],[2,0]], 0, 2))  # True
+print(sol.validPath(6, [[0,1],[0,2],[3,5],[5,4],[4,3]], 0, 5))  # False
+
